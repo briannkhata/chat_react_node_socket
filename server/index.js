@@ -9,7 +9,8 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5000",
+    origin: "http://localhost:3000",
+    //origin: "*",
     methods: ["GET", "POST"],
   },
 });
@@ -17,11 +18,16 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
+  socket.on("join_room",(data)=>{
+    socket.join(data);
+    console.log(`User with ID: ${socket.id} joined room : ${data}`);
+  })
+
   socket.on("disconnect", () => {
     console.log("User Disconnected");
   });
 });
 
-server.listen(5000, () => {
-  console.log("Server running at port 5000");
+server.listen(3001, () => {
+  console.log("Server running at port 3001");
 });
